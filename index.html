@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/hot-sneaks/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.3/themes/hot-sneaks/jquery-ui.css"/>
+    <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <style>
+        .custom-select-icon {
+            height: 37px;
+            /* margin-left: -43px; */
+            /* margin-bottom: 4px; */
+            margin: -67px 2px 0 373px;
+        }
+        .custom-combobox > a:hover {
+            background: unset;
+            border: none;
+        }
+        .ui-autocomplete {
+            max-height: 200px;
+            overflow: scroll;
+        }
+        .custom-combobox {
+            position: relative;
+            display: inline-block;
+        }
+        .custom-combobox-toggle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin-left: -1px;
+            padding: 0;
+        }
+        .custom-combobox-input {
+            margin: 0;
+            padding: 5px 10px;
+        }
+    </style>
+    <script>
+        function fillUserData(data) {
+            // place the person.given_name value into the textfield called 'select_origin'...
+            $('#data').val(JSON.stringify(data));
+            $('#executiveName').val(data.executive_name);
+            $('#dep_name').val(data.dep_name);
+            $('#attendees').val(data.attendees);
+            $('#startdate').val(data.start_date);
+            $('#enddate').val(data.end_date);
+            // $('#internal').val(data.internal?'Internal':'External');
+            $("input[name=isInternal][value=" + (data.internal ? 'Internal' : 'External') + "]").prop('checked', true);
+            console.log(data.t_types)
+            var tSel = `${"input[name=t_types][value=" + CSS.escape(data.t_types) + "]"}`;
+            $(tSel).prop('checked', true);
+            $('#meetingnotes').val(data.m_notes);
+            $('#engagementtopic').val(data.eng_topic);
+        }
+        $(document).ready(function () {
+            const cCities =
+                [{
+                    "id": 1,
+                    "executive_name": "Ruthi Bigly",
+                    "dep_name": "Services",
+                    "attendees": 80,
+                    "start_date": "11/03/2022",
+                    "end_date": "03/16/2022",
+                    "internal": true,
+                    "t_types": "EBC",
+                    "m_notes": "Robust reciprocal help-desk",
+                    "eng_topic": "asymmetric"
+                }, {
+                    "id": 2,
+                    "executive_name": "Lamond Gaddesby",
+                    "dep_name": "Training",
+                    "attendees": 59,
+                    "start_date": "01/26/2022",
+                    "end_date": "03/21/2022",
+                    "internal": false,
+                    "t_types": "Media & Analysts",
+                    "m_notes": "Robust tertiary service-desk",
+                    "eng_topic": "systemic"
+                }, {
+                    "id": 3,
+                    "executive_name": "Rouvin Worsalls",
+                    "dep_name": "Product Management",
+                    "attendees": 88,
+                    "start_date": "06/28/2022",
+                    "end_date": "03/16/2022",
+                    "internal": true,
+                    "t_types": "Customer",
+                    "m_notes": "Versatile client-server matrices",
+                    "eng_topic": "responsive"
+                }, {
+                    "id": 4,
+                    "executive_name": "Adams Smuth",
+                    "dep_name": "Legal",
+                    "attendees": 62,
+                    "start_date": "12/28/2021",
+                    "end_date": "06/30/2022",
+                    "internal": true,
+                    "t_types": "Partner",
+                    "m_notes": "Programmable fresh-thinking archive",
+                    "eng_topic": "methodical"
+                }, {
+                    "id": 5,
+                    "executive_name": "Nelia Thurber",
+                    "dep_name": "Human Resources",
+                    "attendees": 30,
+                    "start_date": "04/02/2022",
+                    "end_date": "11/01/2022",
+                    "internal": true,
+                    "t_types": "Partner",
+                    "m_notes": "Synergistic mobile protocol",
+                    "eng_topic": "Innovative"
+                }, {
+                    "id": 6,
+                    "executive_name": "Alphonse Crossgrove",
+                    "dep_name": "Training",
+                    "attendees": 71,
+                    "start_date": "02/03/2022",
+                    "end_date": "06/24/2022",
+                    "internal": false,
+                    "t_types": "Partner",
+                    "m_notes": "Balanced asynchronous focus group",
+                    "eng_topic": "instruction set"
+                }, {
+                    "id": 7,
+                    "executive_name": "Karel Sancto",
+                    "dep_name": "Human Resources",
+                    "attendees": 56,
+                    "start_date": "05/22/2022",
+                    "end_date": "03/02/2022",
+                    "internal": false,
+                    "t_types": "Customer",
+                    "m_notes": "Business-focused empowering migration",
+                    "eng_topic": "focus group"
+                }, {
+                    "id": 8,
+                    "executive_name": "Tamarah Auston",
+                    "dep_name": "Marketing",
+                    "attendees": 68,
+                    "start_date": "06/01/2022",
+                    "end_date": "01/10/2022",
+                    "internal": false,
+                    "t_types": "Partner",
+                    "m_notes": "Function-based 24/7 architecture",
+                    "eng_topic": "hardware"
+                }, {
+                    "id": 9,
+                    "executive_name": "Jennilee Marwick",
+                    "dep_name": "Sales",
+                    "attendees": 21,
+                    "start_date": "12/17/2021",
+                    "end_date": "03/21/2022",
+                    "internal": false,
+                    "t_types": "Partner",
+                    "m_notes": "Stand-alone dynamic benchmark",
+                    "eng_topic": "web-enabled"
+                }, {
+                    "id": 10,
+                    "executive_name": "Marketa Addie",
+                    "dep_name": "Engineering",
+                    "attendees": 38,
+                    "start_date": "03/22/2022",
+                    "end_date": "07/27/2022",
+                    "internal": false,
+                    "t_types": "EBC",
+                    "m_notes": "Centralized tertiary portal",
+                    "eng_topic": "Digitized"
+                }];
+            $(function () {
+                $(".datepicker").datepicker({
+                    dateFormat: 'mm/dd/yy',
+                    changeMonth: true,
+                    changeYear: true
+                });
+            });
+            $('#autoSuggest').autocomplete({
+                // source: cCities,
+                source: function (request, response) {
+                    response($.map(cCities, function (obj, key) {
+                        var name = obj.executive_name.toUpperCase();
+                        if (name.indexOf(request.term.toUpperCase()) !== -1) {
+                            return {
+                                label: obj.executive_name,// + " (" + obj.dep_name + ")" , // Label for Display
+                                value: obj.id, // Value
+                                data: obj // Value
+                            }
+                        } else {
+                            return null;
+                        }
+                    }));
+                },
+                select: function (event, ui) {
+                    event.preventDefault();
+                    $('#autoSuggest').val(ui.item.label);
+                    fillUserData(ui.item.data);
+                    // ... any other tasks (like setting Hidden Fields) go here...
+                }
+            });
+            $.each(cCities.sort(function(a, b){
+                var a1= a.executive_name.toLowerCase(), b1= b.executive_name.toLowerCase();
+                if(a1== b1) return 0;
+                return a1> b1? 1: -1;
+            }), function (obj, key) {
+                console.log(key)
+                $("#combobox")
+                    .append("<option value='" + (obj) + "'>" + (key.executive_name) + "</option>")
+            });
+            $.widget("custom.combobox", {
+                _create: function () {
+                    this.wrapper = $("<span>")
+                        .addClass("custom-combobox")
+                        .insertAfter(this.element);
+                    this.element.hide();
+                    this._createAutocomplete();
+                    this._createShowAllButton();
+                },
+                _createAutocomplete: function () {
+                    var selected = this.element.children(":selected"),
+                        value = selected.val() ? selected.text() : "";
+                    this.input = $("<input>")
+                        .appendTo(this.wrapper)
+                        .val(value)
+                        .attr("title", "")
+                        .addClass("custom-combobox-input form-control ui-widget ui-widget-content ui-state ui-corner-right")
+                        .autocomplete({
+                            delay: 0,
+                            minLength: 0,
+                            source: this._source.bind(this)
+                        })
+                        .tooltip({
+                            classes: {
+                                "ui-tooltip": "ui-state-highlight"
+                            }
+                        });
+                    this._on(this.input, {
+                        focus: function (event, ui) {
+                            event.currentTarget.select();
+                        },
+                        autocompleteselect: function (event, ui) {
+                            ui.item.option.selected = true;
+                            this._trigger("select", event, {
+                                item: ui.item.option
+                            });
+                            if ($("#combobox").val()) {
+                                fillUserData(cCities[$("#combobox").val()])
+                            }
+                        },
+                        autocompletechange: "_removeIfInvalid"
+                    });
+                },
+                _createShowAllButton: function () {
+                    var input = this.input,
+                        wasOpen = false;
+                    $("<a>")
+                        .attr("tabIndex", -1)
+                        // .attr("title", "Show All Items")
+                        .tooltip()
+                        .appendTo(this.wrapper)
+                        .button({
+                            icons: {
+                                primary: "ui-icon-triangle-1-s"
+                            },
+                            text: false
+                        })
+                        .removeClass("ui-corner-all")
+                        .removeClass("ui-state-default")
+                        .addClass("custom-select-icon")
+                        .on("mousedown", function () {
+                            wasOpen = input.autocomplete("widget").is(":visible");
+                        })
+                        .on("click", function () {
+                            input.trigger("focus");
+                            // Close if already visible
+                            if (wasOpen) {
+                                return;
+                            }
+                            // Pass empty string as value to search for, displaying all results
+                            input.autocomplete("search", "");
+                        });
+                },
+                _source: function (request, response) {
+                    var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+                    response(this.element.children("option").map(function () {
+                        var text = $(this).text();
+                        if (this.value && (!request.term || matcher.test(text)))
+                            return {
+                                label: text,
+                                value: text,
+                                option: this
+                            };
+                    }));
+                },
+                _removeIfInvalid: function (event, ui) {
+                    // Selected an item, nothing to do
+                    if (ui.item) {
+                        return;
+                    }
+                    // Search for a match (case-insensitive)
+                    var value = this.input.val(),
+                        valueLowerCase = value.toLowerCase(),
+                        valid = false;
+                    this.element.children("option").each(function () {
+                        if ($(this).text().toLowerCase() === valueLowerCase) {
+                            this.selected = valid = true;
+                            return false;
+                        }
+                    });
+                    // Found a match, nothing to do
+                    if (valid) {
+                        return;
+                    }
+                    // Remove invalid value
+                    this.input
+                        .val("")
+                        .attr("title", value + " didn't match any item")
+                        .tooltip("open");
+                    this.element.val("");
+                    this._delay(function () {
+                        this.input.tooltip("close").attr("title", "");
+                    }, 2500);
+                    this.input.autocomplete("instance").term = "";
+                },
+                _destroy: function () {
+                    this.wrapper.remove();
+                    this.element.show();
+                }
+            });
+            $("#combobox").combobox({
+                selected: function (event, ui) {
+                    console.log("val", event, ui)
+                    fillUserData(cCities[$("#combobox").val()])
+                }
+            });
+            $("#toggle").on("click", function () {
+                $("#combobox").toggle();
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container bg-light">
+    <form action="action_page.php" method="get" autocomplete="on">
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <label for="combobox" class="form-label">
+                    Executive name </label>
+                <input type="hidden" class="form-control" id="autoSuggest" placeholder="Search Executive..."/>
+                <select name="executive" id="combobox" class="custom-select">
+                    <option></option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" for="dep_name">Account Name </label> <input id="dep_name"
+                                                                                      class="form-control"/>
+            </div>
+            <div class="col-md-4">
+                <label for="attendees" class="form-label"> # of Attendees</label>
+                <input type="text"
+                       id="attendees"
+                       class="form-control"/>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <label class="form-label" for="startdate">Start Date </label>
+                <input type="text" class="form-control datepicker" id="startdate" pattern="\d{1,2}/\d{1,2}/\d{4}"
+                       placeholder="mm/dd/yyyy"/></div>
+            <div class="col-md-4">
+                <label class="form-label" for="enddate">End Date </label>
+                <input type="text" class="form-control datepicker" id="enddate" placeholder="mm/dd/yyyy"
+                       pattern="\d{1,2}/\d{1,2}/\d{4}"/></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mt-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="isInternal" id="internal"
+                           value="Internal">
+                    <label class="form-check-label" for="internal">
+                        Internal
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="isInternal" id="external"
+                           value="External">
+                    <label class="form-check-label" for="external">
+                        External
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-4 mt-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="t_types" id="t_types1"
+                           value="Customer">
+                    <label class="form-check-label" for="t_types1">
+                        Customer
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="t_types" id="t_types2"
+                           value="Partner">
+                    <label class="form-check-label" for="t_types2">
+                        Partner
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="t_types" id="t_types3"
+                           value="Media & Analysts">
+                    <label class="form-check-label" for="t_types3">
+                        Media & Analysts
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="t_types" id="t_types4"
+                           value="EBC">
+                    <label class="form-check-label" for="t_types4">
+                        EBC
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="meetingnotes" class="form-label">Meeting notes </label>
+                <textarea class="form-control" id="meetingnotes"></textarea>
+            </div>
+            <div class="col-md-6">
+                <label for="engagementtopic" class="form-label">Engagement topic </label>
+                <textarea class="form-control" id="engagementtopic"></textarea>
+            </div>
+            <!--        <div class="col-md-4">-->
+            <!--            <label for="data" class="form-label"> </label>-->
+            <!--            <textarea class="form-control" id="data" rows="5"></textarea>-->
+            <!--        </div>-->
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <button class="btn btn-primary"> Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!--<form>-->
+<!--</form>-->
+<form action="/action_page.php" method="get" autocomplete="on" style="display: none">
+    <div class="container-fluid main-page bubble-element Page"
+         style="width: 530px; height: 1685px; min-height: 100%; margin-right: auto; margin-left: auto; position: absolute; z-index: 1; top: 0px; overflow: hidden; background: none transparent; box-sizing: border-box;">
+        <div class="bubble-r-line" style="margin-top: 115px; height: 45px;">
+            <div class="bubble-r-box" style="height: 45px; left: 2.61538px; width: 500px;">
+                <select
+                        class="bubble-element Dropdown" tabindex="1"
+                        style="width: 500px; left: 0px; position: absolute; box-sizing: border-box; z-index: 10; height: 45px; top: 0px; border: 1px solid rgba(171, 171, 171, 0.4); background-color: rgb(250, 250, 250); color: rgb(153, 153, 153); font-family: Barlow; font-size: 16px; font-weight: 500; border-radius: 3px;">
+                    <option class="dropdown-choice dropdown-placeholder" value="&quot;PLACEHOLDER_1427118222253&quot;"
+                            style="color: rgb(153, 153, 153); display: none;">Executive Name
+                    </option>
+                    <option class="dropdown-choice" value="&quot;John&quot;" style="color: rgb(153, 153, 153);">John
+                    </option>
+                    <option class="dropdown-choice" value="&quot;Jane&quot;" style="color: rgb(153, 153, 153);">Jane
+                    </option>
+                    <option class="dropdown-choice" value="&quot;Jack&quot;" style="color: rgb(153, 153, 153);">Jack
+                    </option>
+                    <option class="dropdown-choice" value="&quot;Jillian&quot;" style="color: rgb(153, 153, 153);">
+                        Jillian
+                    </option>
+                </select></div>
+        </div>
+        <div class="bubble-r-line" style="margin-top: 23px; height: 45px;">
+            <div class="bubble-r-box" style="height: 45px; left: 2.61538px; width: 500px;">
+                <select
+                        class="bubble-element Dropdown" tabindex="2"
+                        style="width: 500px; left: 0px; position: absolute; box-sizing: border-box; z-index: 5; height: 45px; top: 0px; border: 1px solid rgba(171, 171, 171, 0.4); background-color: rgb(250, 250, 250); color: rgb(153, 153, 153); font-family: Barlow; font-size: 16px; font-weight: 500; border-radius: 3px;">
+                    <option class="dropdown-choice dropdown-placeholder" value="&quot;PLACEHOLDER_1427118222253&quot;"
+                            style="color: rgb(153, 153, 153); display: none;">Account Name
+                    </option>
+                    <option class="dropdown-choice" value="&quot;OSPO&quot;" style="color: rgb(153, 153, 153);">OSPO
+                    </option>
+                    <option class="dropdown-choice" value="&quot;RADIO&quot;" style="color: rgb(153, 153, 153);">RADIO
+                    </option>
+                    <option class="dropdown-choice" value="&quot;TechTalks&quot;" style="color: rgb(153, 153, 153);">
+                        TechTalks
+                    </option>
+                    <option class="dropdown-choice" value="&quot;Flings&quot;" style="color: rgb(153, 153, 153);">Flings
+                    </option>
+                </select></div>
+        </div>
+        <div class="bubble-r-line" style="margin-top: 28px; height: 45px;">
+            <div class="bubble-r-box" style="height: 45px; left: 2.61538px; width: 500px;"><input type="input"
+                                                                                                  class="bubble-element Input"
+                                                                                                  placeholder="# of Attendees"
+                                                                                                  maxlength=""
+                                                                                                  tabindex="3"
+                                                                                                  style="width: 500px; left: 0px; position: absolute; box-sizing: border-box; z-index: 9; height: 45px; top: 0px; border: 1px solid rgba(171, 171, 171, 0.41); background: none rgb(252, 252, 252); border-radius: 5px; font-family: Barlow; font-size: 16px; font-weight: 500; color: rgb(107, 107, 107); padding: 0px 10px;">
+            </div>
+        </div>
+        <div class="bubble-r-line" style="margin-top: 20px; height: 45px;">
+            <div class="bubble-r-box" style="height: 45px; left: 25.2821px; width: 240px;">
+                <div class="bubble-element DateInput date_picker_element clickable-element"
+                     style="width: 240px; left: 0px; position: absolute; box-sizing: border-box; z-index: 3; height: 45px; top: 0px; overflow: visible;">
+                    <input type="date" class="date_div picker__input" placeholder="11/14/2021" id="P1462182667"
+                           aria-haspopup="true" aria-expanded="false" aria-readonly="false" aria-owns="P1462182667_root"
+                           tabindex="4"
+                           style="border: 1px solid rgba(171, 171, 171, 0.39); background-color: rgb(250, 250, 250); cursor: pointer; height: 43px; box-sizing: content-box; width: 218px; border-radius: 6px; font-family: Barlow; font-size: 14px; font-weight: 500; color: rgb(153, 153, 153); padding: 0px 10px;">
+                </div>
+            </div>
+        </div>
+        <div class="bubble-r-line" style="margin-top: 20px; height: 45px;">
+            <div class="bubble-r-box" style="height: 45px; left: 25.2821px; width: 240px;">
+                <div class="bubble-element DateInput date_picker_element clickable-element"
+                     style="width: 240px; left: 0px; position: absolute; box-sizing: border-box; z-index: 4; height: 45px; top: 0px; overflow: visible;">
+                    <input type="date" class="date_div picker__input" placeholder="11/14/2021" id="P978836618"
+                           aria-haspopup="true" aria-expanded="false" aria-readonly="false" aria-owns="P978836618_root"
+                           tabindex="5"
+                           style="border: 1px solid rgba(171, 171, 171, 0.39); background-color: rgb(250, 250, 250); cursor: pointer; height: 43px; box-sizing: content-box; width: 218px; border-radius: 6px; font-family: Barlow; font-size: 14px; font-weight: 500; color: rgb(153, 153, 153); padding: 0px 10px;">
+                </div>
+            </div>
+        </div>
+        <div class="bubble-r-line" style="margin-top: 20px; height: 100px;">
+            <div class="bubble-r-box" style="height: 100px; left: 25.2821px; width: 240px;">
+                <div class="bubble-element RadioButtons clickable-element"
+                     style="width: 240px; left: 0px; position: absolute; box-sizing: border-box; z-index: 6; height: 100px; top: 0px; font-family: Lato; font-size: 14px; color: rgb(37, 37, 37);">
+                    <div class="radio-v0 radio-black"><input type="radio" value="Internal" name="1636910970601x854"
+                                                             id="1636910970601x854_option_0" tabindex="6"><label
+                            for="1636910970601x854_option_0" style="width: 210px; margin-right: 20px; margin-top: 3px;">Internal</label><input
+                            type="radio" value="External" name="1636910970601x854"
+                            id="1636910970601x854_option_1"><label for="1636910970601x854_option_1"
+                                                                   style="width: 210px; margin-right: 20px; margin-top: 12px;">External</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bubble-r-line" style="margin-top: 20px; height: 100px;">
+            <div class="bubble-r-box" style="height: 100px; left: 25.2821px; width: 240px;">
+                <div class="bubble-element RadioButtons clickable-element"
+                     style="width: 240px; left: 0px; position: absolute; box-sizing: border-box; z-index: 8; height: 100px; top: 0px; font-family: Lato; font-size: 14px; color: rgb(37, 37, 37);">
+                    <div class="radio-v0 radio-black"><input type="radio" value="Customer" name="1636910970637x1036"
+                                                             id="1636910970637x1036_option_0" tabindex="7"><label
+                            for="1636910970637x1036_option_0"
+                            style="width: 210px; margin-right: 20px; margin-top: 3px;">Customer</label><input
+                            type="radio" value="Partner" name="1636910970637x1036"
+                            id="1636910970637x1036_option_1"><label for="1636910970637x1036_option_1"
+                                                                    style="width: 210px; margin-right: 20px; margin-top: 12px;">Partner</label><input
+                            type="radio" value="Media &amp; Analysts" name="1636910970637x1036"
+                            id="1636910970637x1036_option_2"><label for="1636910970637x1036_option_2"
+                                                                    style="width: 210px; margin-right: 20px; margin-top: 12px;">Media
+                        &amp; Analysts</label><input type="radio" value="EBC" name="1636910970637x1036"
+                                                     id="1636910970637x1036_option_3"><label
+                            for="1636910970637x1036_option_3"
+                            style="width: 210px; margin-right: 20px; margin-top: 12px;">EBC</label></div>
+                </div>
+            </div>
+        </div>
+        <div class="bubble-r-line" style="margin-top: 27px; height: 200px;">
+            <div class="bubble-r-box" style="height: 200px; left: 2.61538px; width: 500px;"><textarea
+                    class="bubble-element MultiLineInput" data-gramm_editor="false" placeholder="Meeting Notes"
+                    maxlength="" tabindex="8"
+                    style="width: 500px; left: 0px; position: absolute; box-sizing: border-box; z-index: 2; height: 200px; top: 0px; border: 1px solid rgb(189, 189, 189); background-color: rgb(255, 255, 255); border-radius: 3px; font-family: Lato; font-size: 14px; color: rgb(61, 61, 61); line-height: 1; padding: 4px;"></textarea>
+            </div>
+        </div>
+        <div class="bubble-r-line" style="margin-top: 25px; height: 80px;">
+            <div class="bubble-r-box" style="height: 80px; left: 2.61538px; width: 500px;">
+                <div class="bubble-element select2-MultiDropdown"
+                     style="width: 500px; left: 0px; position: absolute; box-sizing: border-box; z-index: 7; height: 80px; top: 0px; overflow: visible; font-family: Lato; font-size: 14px; color: rgb(37, 37, 37); background-color: rgb(255, 255, 255); border-style: solid; border-width: 1px; border-color: rgb(133, 133, 133); border-radius: 3px;">
+                    <select class="inner-dropdown select2-hidden-accessible" multiple=""
+                            style="width: 100%; height: 100%;" tabindex="-1" aria-hidden="true">
+                        <option value="IOT">IOT</option>
+                        <option value="Edge">Edge</option>
+                        <option value="Blockchain">Blockchain</option>
+                        <option value="Security">Security</option>
+                        <option value="Networking">Networking</option>
+                    </select><span class="select2 select2-container select2-container--default" dir="false"
+                                   style="width: 100%; height: 80px;"><span class="selection"><span
+                        class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true"
+                        aria-expanded="false" tabindex="-1" style="height: 80px;"><ul
+                        class="select2-selection__rendered"><li class="select2-search select2-search--inline"><input
+                        class="select2-search__field grey" type="search" tabindex="0" autocomplete="off"
+                        autocorrect="off" autocapitalize="off" spellcheck="false" role="textbox"
+                        aria-autocomplete="list" placeholder="Click to Select Engagement Topics"
+                        style="width: 498px; font-family: Lato; font-size: 14px; color: rgb(37, 37, 37);"></li></ul></span><input
+                        type="submit"></span><span class="dropdown-wrapper" aria-hidden="true"></span></span></div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>
