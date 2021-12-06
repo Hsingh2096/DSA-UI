@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Title</title>
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/hot-sneaks/jquery-ui.css"/>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.3/themes/hot-sneaks/jquery-ui.css"/>
     <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
     <script src="https://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
@@ -14,25 +13,31 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
+
     <style>
         .custom-select-icon {
             height: 37px;
             /* margin-left: -43px; */
             /* margin-bottom: 4px; */
             margin: -67px 2px 0 373px;
+
         }
+
         .custom-combobox > a:hover {
             background: unset;
             border: none;
         }
+
         .ui-autocomplete {
             max-height: 200px;
             overflow: scroll;
         }
+
         .custom-combobox {
             position: relative;
             display: inline-block;
         }
+
         .custom-combobox-toggle {
             position: absolute;
             top: 0;
@@ -40,14 +45,18 @@
             margin-left: -1px;
             padding: 0;
         }
+
         .custom-combobox-input {
             margin: 0;
             padding: 5px 10px;
         }
     </style>
+
+
     <script>
         function fillUserData(data) {
             // place the person.given_name value into the textfield called 'select_origin'...
+
             $('#data').val(JSON.stringify(data));
             $('#executiveName').val(data.executive_name);
             $('#dep_name').val(data.dep_name);
@@ -56,12 +65,16 @@
             $('#enddate').val(data.end_date);
             // $('#internal').val(data.internal?'Internal':'External');
             $("input[name=isInternal][value=" + (data.internal ? 'Internal' : 'External') + "]").prop('checked', true);
+
             console.log(data.t_types)
             var tSel = `${"input[name=t_types][value=" + CSS.escape(data.t_types) + "]"}`;
+
+
             $(tSel).prop('checked', true);
             $('#meetingnotes').val(data.m_notes);
             $('#engagementtopic').val(data.eng_topic);
         }
+
         $(document).ready(function () {
             const cCities =
                 [{
@@ -74,7 +87,7 @@
                     "internal": true,
                     "t_types": "EBC",
                     "m_notes": "Robust reciprocal help-desk",
-                    "eng_topic": "asymmetric"
+                    "eng_topic": "IOT"
                 }, {
                     "id": 2,
                     "executive_name": "Lamond Gaddesby",
@@ -85,7 +98,7 @@
                     "internal": false,
                     "t_types": "Media & Analysts",
                     "m_notes": "Robust tertiary service-desk",
-                    "eng_topic": "systemic"
+                    "eng_topic": "Edge"
                 }, {
                     "id": 3,
                     "executive_name": "Rouvin Worsalls",
@@ -96,7 +109,7 @@
                     "internal": true,
                     "t_types": "Customer",
                     "m_notes": "Versatile client-server matrices",
-                    "eng_topic": "responsive"
+                    "eng_topic": "Blockchain"
                 }, {
                     "id": 4,
                     "executive_name": "Adams Smuth",
@@ -107,7 +120,7 @@
                     "internal": true,
                     "t_types": "Partner",
                     "m_notes": "Programmable fresh-thinking archive",
-                    "eng_topic": "methodical"
+                    "eng_topic": "Blockchain"
                 }, {
                     "id": 5,
                     "executive_name": "Nelia Thurber",
@@ -118,7 +131,7 @@
                     "internal": true,
                     "t_types": "Partner",
                     "m_notes": "Synergistic mobile protocol",
-                    "eng_topic": "Innovative"
+                    "eng_topic": "Blockchain"
                 }, {
                     "id": 6,
                     "executive_name": "Alphonse Crossgrove",
@@ -129,7 +142,7 @@
                     "internal": false,
                     "t_types": "Partner",
                     "m_notes": "Balanced asynchronous focus group",
-                    "eng_topic": "instruction set"
+                    "eng_topic": "IOT"
                 }, {
                     "id": 7,
                     "executive_name": "Karel Sancto",
@@ -140,7 +153,7 @@
                     "internal": false,
                     "t_types": "Customer",
                     "m_notes": "Business-focused empowering migration",
-                    "eng_topic": "focus group"
+                    "eng_topic": "Networking"
                 }, {
                     "id": 8,
                     "executive_name": "Tamarah Auston",
@@ -151,7 +164,7 @@
                     "internal": false,
                     "t_types": "Partner",
                     "m_notes": "Function-based 24/7 architecture",
-                    "eng_topic": "hardware"
+                    "eng_topic": "Security"
                 }, {
                     "id": 9,
                     "executive_name": "Jennilee Marwick",
@@ -162,7 +175,7 @@
                     "internal": false,
                     "t_types": "Partner",
                     "m_notes": "Stand-alone dynamic benchmark",
-                    "eng_topic": "web-enabled"
+                    "eng_topic": "Security"
                 }, {
                     "id": 10,
                     "executive_name": "Marketa Addie",
@@ -173,8 +186,9 @@
                     "internal": false,
                     "t_types": "EBC",
                     "m_notes": "Centralized tertiary portal",
-                    "eng_topic": "Digitized"
+                    "eng_topic": "Security"
                 }];
+
             $(function () {
                 $(".datepicker").datepicker({
                     dateFormat: 'mm/dd/yy',
@@ -182,11 +196,15 @@
                     changeYear: true
                 });
             });
+
+
             $('#autoSuggest').autocomplete({
                 // source: cCities,
                 source: function (request, response) {
                     response($.map(cCities, function (obj, key) {
+
                         var name = obj.executive_name.toUpperCase();
+
                         if (name.indexOf(request.term.toUpperCase()) !== -1) {
                             return {
                                 label: obj.executive_name,// + " (" + obj.dep_name + ")" , // Label for Display
@@ -205,6 +223,7 @@
                     // ... any other tasks (like setting Hidden Fields) go here...
                 }
             });
+
             $.each(cCities.sort(function(a, b){
                 var a1= a.executive_name.toLowerCase(), b1= b.executive_name.toLowerCase();
                 if(a1== b1) return 0;
@@ -214,18 +233,22 @@
                 $("#combobox")
                     .append("<option value='" + (obj) + "'>" + (key.executive_name) + "</option>")
             });
+
             $.widget("custom.combobox", {
                 _create: function () {
                     this.wrapper = $("<span>")
                         .addClass("custom-combobox")
                         .insertAfter(this.element);
+
                     this.element.hide();
                     this._createAutocomplete();
                     this._createShowAllButton();
                 },
+
                 _createAutocomplete: function () {
                     var selected = this.element.children(":selected"),
                         value = selected.val() ? selected.text() : "";
+
                     this.input = $("<input>")
                         .appendTo(this.wrapper)
                         .val(value)
@@ -241,6 +264,7 @@
                                 "ui-tooltip": "ui-state-highlight"
                             }
                         });
+
                     this._on(this.input, {
                         focus: function (event, ui) {
                             event.currentTarget.select();
@@ -254,9 +278,11 @@
                                 fillUserData(cCities[$("#combobox").val()])
                             }
                         },
+
                         autocompletechange: "_removeIfInvalid"
                     });
                 },
+
                 _createShowAllButton: function () {
                     var input = this.input,
                         wasOpen = false;
@@ -283,10 +309,12 @@
                             if (wasOpen) {
                                 return;
                             }
+
                             // Pass empty string as value to search for, displaying all results
                             input.autocomplete("search", "");
                         });
                 },
+
                 _source: function (request, response) {
                     var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
                     response(this.element.children("option").map(function () {
@@ -299,11 +327,14 @@
                             };
                     }));
                 },
+
                 _removeIfInvalid: function (event, ui) {
+
                     // Selected an item, nothing to do
                     if (ui.item) {
                         return;
                     }
+
                     // Search for a match (case-insensitive)
                     var value = this.input.val(),
                         valueLowerCase = value.toLowerCase(),
@@ -314,10 +345,12 @@
                             return false;
                         }
                     });
+
                     // Found a match, nothing to do
                     if (valid) {
                         return;
                     }
+
                     // Remove invalid value
                     this.input
                         .val("")
@@ -329,21 +362,29 @@
                     }, 2500);
                     this.input.autocomplete("instance").term = "";
                 },
+
                 _destroy: function () {
                     this.wrapper.remove();
                     this.element.show();
                 }
             });
+
+
             $("#combobox").combobox({
                 selected: function (event, ui) {
                     console.log("val", event, ui)
                     fillUserData(cCities[$("#combobox").val()])
                 }
             });
+
+
             $("#toggle").on("click", function () {
                 $("#combobox").toggle();
             });
+
         });
+
+
     </script>
 </head>
 <body>
@@ -354,14 +395,18 @@
                 <label for="combobox" class="form-label">
                     Executive name </label>
                 <input type="hidden" class="form-control" id="autoSuggest" placeholder="Search Executive..."/>
+
                 <select name="executive" id="combobox" class="custom-select">
                     <option></option>
                 </select>
+
+
             </div>
             <div class="col-md-4">
                 <label class="form-label" for="dep_name">Account Name </label> <input id="dep_name"
                                                                                       class="form-control"/>
             </div>
+
             <div class="col-md-4">
                 <label for="attendees" class="form-label"> # of Attendees</label>
                 <input type="text"
@@ -372,11 +417,11 @@
         <div class="row mt-4">
             <div class="col-md-4">
                 <label class="form-label" for="startdate">Start Date </label>
-                <input type="text" class="form-control datepicker" id="startdate" pattern="\d{1,2}/\d{1,2}/\d{4}"
+                <input type="date" class="form-control" id="startdate" pattern="\d{1,2}/\d{1,2}/\d{4}"
                        placeholder="mm/dd/yyyy"/></div>
             <div class="col-md-4">
                 <label class="form-label" for="enddate">End Date </label>
-                <input type="text" class="form-control datepicker" id="enddate" placeholder="mm/dd/yyyy"
+                <input type="date" class="form-control" id="enddate" placeholder="mm/dd/yyyy"
                        pattern="\d{1,2}/\d{1,2}/\d{4}"/></div>
         </div>
         <div class="row">
@@ -418,6 +463,7 @@
                         Media & Analysts
                     </label>
                 </div>
+
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="t_types" id="t_types4"
                            value="EBC">
@@ -430,10 +476,18 @@
                 <label for="meetingnotes" class="form-label">Meeting notes </label>
                 <textarea class="form-control" id="meetingnotes"></textarea>
             </div>
-            <div class="col-md-6">
+           <div class="col-md-6">
                 <label for="engagementtopic" class="form-label">Engagement topic </label>
-                <textarea class="form-control" id="engagementtopic"></textarea>
+                <select class="select form-control" id="engagementtopic">
+                            <option value=""></option>
+                            <option value="IOT">IOT</option>
+                            <option value="Edge">Edge</option>
+                            <option value="Blockchain">Blockchain</option>
+                            <option value="Security">Security</option>
+                            <option value="Networking">Networking</option>
+                        </select>
             </div>
+
             <!--        <div class="col-md-4">-->
             <!--            <label for="data" class="form-label"> </label>-->
             <!--            <textarea class="form-control" id="data" rows="5"></textarea>-->
@@ -446,8 +500,12 @@
         </div>
     </form>
 </div>
+
 <!--<form>-->
+
 <!--</form>-->
+
+
 <form action="/action_page.php" method="get" autocomplete="on" style="display: none">
     <div class="container-fluid main-page bubble-element Page"
          style="width: 530px; height: 1685px; min-height: 100%; margin-right: auto; margin-left: auto; position: absolute; z-index: 1; top: 0px; overflow: hidden; background: none transparent; box-sizing: border-box;">
