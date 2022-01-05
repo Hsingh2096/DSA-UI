@@ -57,6 +57,7 @@
     <script>
 
         const cCities = [];
+        var selectedEngTopics = [];
         var saveOrUpdateData = null;
         function fillUserData(data) {
             // place the person.given_name value into the textfield called 'select_origin'...
@@ -77,6 +78,7 @@
 
             $(tSel).prop('checked', true);
             $('#meetingnotes').val(data.m_notes);
+
             $('#engagementtopic').val(data.eng_topic);
         }
 
@@ -92,7 +94,7 @@
                 "internal": true,
                 "t_types": "EBC",
                 "m_notes": "Robust reciprocal help-desk",
-                "eng_topic": "IOT"
+                "eng_topic": ["IOT"]
             }, {
                 "id": 2,
                 "executive_name": "Lamond Gaddesby",
@@ -103,7 +105,7 @@
                 "internal": false,
                 "t_types": "Media & Analysts",
                 "m_notes": "Robust tertiary service-desk",
-                "eng_topic": "Edge"
+                "eng_topic": ["Edge"]
             }, {
                 "id": 3,
                 "executive_name": "Rouvin Worsalls",
@@ -114,7 +116,7 @@
                 "internal": true,
                 "t_types": "Customer",
                 "m_notes": "Versatile client-server matrices",
-                "eng_topic": "Blockchain"
+                "eng_topic": ["Blockchain"]
             }, {
                 "id": 4,
                 "executive_name": "Adams Smuth",
@@ -125,7 +127,7 @@
                 "internal": true,
                 "t_types": "Partner",
                 "m_notes": "Programmable fresh-thinking archive",
-                "eng_topic": "Blockchain"
+                "eng_topic": ["Blockchain"]
             }, {
                 "id": 5,
                 "executive_name": "Nelia Thurber",
@@ -136,7 +138,7 @@
                 "internal": true,
                 "t_types": "Partner",
                 "m_notes": "Synergistic mobile protocol",
-                "eng_topic": "Blockchain"
+                "eng_topic": ["Blockchain"]
             }, {
                 "id": 6,
                 "executive_name": "Alphonse Crossgrove",
@@ -147,7 +149,7 @@
                 "internal": false,
                 "t_types": "Partner",
                 "m_notes": "Balanced asynchronous focus group",
-                "eng_topic": "IOT"
+                "eng_topic": ["IOT"]
             }, {
                 "id": 7,
                 "executive_name": "Karel Sancto",
@@ -158,7 +160,7 @@
                 "internal": false,
                 "t_types": "Customer",
                 "m_notes": "Business-focused empowering migration",
-                "eng_topic": "Networking"
+                "eng_topic": ["Networking"]
             }, {
                 "id": 8,
                 "executive_name": "Tamarah Auston",
@@ -169,7 +171,7 @@
                 "internal": false,
                 "t_types": "Partner",
                 "m_notes": "Function-based 24/7 architecture",
-                "eng_topic": "Security"
+                "eng_topic": ["Security"]
             }, {
                 "id": 9,
                 "executive_name": "Jennilee Marwick",
@@ -180,7 +182,7 @@
                 "internal": false,
                 "t_types": "Partner",
                 "m_notes": "Stand-alone dynamic benchmark",
-                "eng_topic": "Security"
+                "eng_topic": ["Security"]
             }, {
                 "id": 10,
                 "executive_name": "Marketa Addie",
@@ -191,8 +193,23 @@
                 "internal": false,
                 "t_types": "EBC",
                 "m_notes": "Centralized tertiary portal",
-                "eng_topic": "Security"
+                "eng_topic": ["Security"]
             }];
+
+
+            $('#engagementtopic').on('change', function () {
+                selectedEngTopics = [];
+                var $selectedOptions = $(this).find('option:selected');
+                console.log("engtopic changed", $selectedOptions);
+                $selectedOptions.each(function () {
+                    selectedEngTopics.push($(this).text());
+                });
+                $('#tmpEngTopic').val(selectedEngTopics);
+
+                // do whatever you want with 'values'
+            });
+
+
 
             for (let index = 0; index < cDataLocal.length; index++) {
                 const element = cDataLocal[index];
@@ -231,7 +248,12 @@
                 select: function (event, ui) {
                     event.preventDefault();
                     $('#autoSuggest').val(ui.item.label);
-                    fillUserData(ui.item.data);
+                    console.log("Selected data", ui.item.data);
+                    var dataObj = ui.item.data;
+
+                    dataObj['eng_topic'].value = $("#tmpEngTopic").val();
+                    console.log("Save data", dataObj);
+                    fillUserData(dataObj);
                     // ... any other tasks (like setting Hidden Fields) go here...
                 }
             });
@@ -289,6 +311,9 @@
                         autocompleteselect: function (event, ui) {
                             console.log("ui.item.option['value']", ui.item.option['value']);
 
+
+
+
                             if (!ui.item.option['value'] || ui.item.option['value'] < 0) {
                                 //    var yes= confirm("Do u want to add new Item");
                                 //    if(yes){
@@ -300,12 +325,25 @@
                                 return;
                             }
 
+
+
                             ui.item.option.selected = true;
                             this._trigger("select", event, {
                                 item: ui.item.option
                             });
                             if ($("#combobox").val()) {
-                                fillUserData(cCities[$("#combobox").val()])
+
+                                console.log("Selected data", ui.item);
+
+
+
+
+                                var dataIndex = $("#combobox").val();
+
+
+                                const dataObj = cCities[dataIndex];
+                               
+                                fillUserData(dataObj)
                             }
                         },
 
@@ -457,8 +495,10 @@
                 const DOC_ID = formObj['id'].value;
                 var dataIndex = cCities.findIndex(x => x.id === Number(DOC_ID));
 
-                if ( dataIndex >= 0) {
+                if (dataIndex >= 0) {
                     var orgData = cCities[dataIndex];
+
+                   
 
                     data = {
                         "id": orgData.id,
@@ -470,7 +510,7 @@
                         "internal": formObj['isInternal'].value,
                         "t_types": formObj['t_types'].value,
                         "m_notes": formObj['meetingnotes'].value,
-                        "eng_topic": formObj['engagementtopic'].value,
+                        "eng_topic": selectedEngTopics,
                     };
                     cCities[dataIndex] = data;
 
@@ -487,7 +527,7 @@
                         "internal": formObj['isInternal'].value,
                         "t_types": formObj['t_types'].value,
                         "m_notes": formObj['meetingnotes'].value,
-                        "eng_topic": formObj['engagementtopic'].value,
+                        "eng_topic": selectedEngTopics,
                         "local_item": true,
                     }
                     cCities.push(data);
@@ -594,7 +634,9 @@
 
                     <div class="form-check">
                         <input required class="form-check-input" type="radio" name="t_types" id="t_types4" value="EBC">
-                        <label class="form-check-label" for="t_types4"> EBC </label>
+                            <label class="form-check-label" for="t_types4">
+                                EBC
+                            </label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -603,7 +645,7 @@
                 </div>
                 <div class="col-md-6">
                     <label for="engagementtopic" class="form-label">Engagement topic </label>
-                    <select required class="select form-control" id="engagementtopic">
+                    <select multiple="true" required class="select form-control" id="engagementtopic">
                         <option value=""></option>
                         <option value="IOT">IOT</option>
                         <option value="Edge">Edge</option>
@@ -611,6 +653,7 @@
                         <option value="Security">Security</option>
                         <option value="Networking">Networking</option>
                     </select>
+                    <input type="hidden" name="tmpEngTopic" id="tmpEngTopic">
                 </div>
 
                 <!--        <div class="col-md-4">-->
